@@ -2,6 +2,7 @@ package manage
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	oauth2 "github.com/Bifang-Bird/goOauth2"
@@ -285,10 +286,13 @@ func (m *Manager) GenerateAccessToken(ctx context.Context, gt oauth2.GrantType, 
 		return nil, err
 	}
 	if cliPass, ok := cli.(oauth2.ClientPasswordVerifier); ok {
-		if !cliPass.VerifyPassword(tgr.Password) {
+		verifyPassword := cliPass.VerifyPassword(tgr.Password)
+		fmt.Printf("GenerateAccessToken  oauth2.ClientPasswordVerifier = %v,verifypassword = %v\n", cliPass, verifyPassword)
+		if !verifyPassword {
 			return nil, errors.ErrInvalidClient
 		}
 	} else if len(cli.GetSecret()) > 0 && tgr.ClientSecret != cli.GetSecret() {
+		fmt.Printf("GenerateAccessToken  cli = %v,tgr = %v\n", cli, *tgr)
 		return nil, errors.ErrInvalidClient
 	}
 	if tgr.RedirectURI != "" {

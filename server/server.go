@@ -52,6 +52,7 @@ func NewServer(cfg *Config, manager oauth2.Manager) *Server {
 		}
 		return "", errors.ErrAccessDenied
 	}
+
 	return srv
 }
 
@@ -377,6 +378,7 @@ func (s *Server) ValidationTokenRequest(r *http.Request) (oauth2.GrantType, *oau
 		}
 
 		userID, err := s.PasswordAuthorizationHandler(r.Context(), clientID, username, password)
+		fmt.Printf("PasswordAuthorizationHandler userID = %v ,err =%v\n", userID, err)
 		if err != nil {
 			return "", nil, err
 		} else if userID == "" {
