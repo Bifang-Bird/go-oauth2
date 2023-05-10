@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
@@ -28,7 +29,7 @@ func NewServer(cfg *Config, manager oauth2.Manager) *Server {
 	}
 
 	// default handler
-	srv.ClientInfoHandler = ClientBasicHandler
+	srv.SetClientInfoHandler(ClientBasicHandler)
 
 	srv.UserAuthorizationHandler = func(w http.ResponseWriter, r *http.Request) (string, error) {
 		return "", errors.ErrAccessDenied
@@ -340,6 +341,8 @@ func (s *Server) ValidationTokenRequest(r *http.Request) (oauth2.GrantType, *oau
 	}
 
 	clientID, clientSecret, err := s.ClientInfoHandler(r)
+
+	fmt.Printf("clientId=%v,clientSecret=%v,clientInfoHandleType=%v", clientID, clientSecret, reflect.TypeOf(s.ClientInfoHandler))
 	if err != nil {
 		return "", nil, err
 	}
@@ -522,11 +525,11 @@ func (s *Server) HandleTokenRequest(w http.ResponseWriter, r *http.Request) erro
 	if err != nil {
 		return s.tokenError(w, err)
 	}
-
 	ti, err := s.GetAccessToken(ctx, gt, tgr)
 	if err != nil {
 		return s.tokenError(w, err)
 	}
+	fmt.Printf("ValidationTokenRequest,gt=%v,tgr=%v,tokenInfo=%v", gt, tgr, ti)
 
 	return s.token(w, s.GetTokenData(ti), nil)
 }
