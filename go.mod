@@ -1,4 +1,4 @@
-module goOauth2
+module github.com/Bifang-Bird/goOauth2
 
 go 1.13
 

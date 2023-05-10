@@ -2,11 +2,12 @@ package server
 
 import (
 	"context"
-	"goOauth2"
 	"net/http"
 	"time"
 
-	"goOauth2/errors"
+	oauth2 "github.com/Bifang-Bird/goOauth2"
+
+	"github.com/Bifang-Bird/goOauth2/errors"
 )
 
 type (

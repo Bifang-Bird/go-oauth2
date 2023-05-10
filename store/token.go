@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"time"
 
-	oauth2 "goOauth2"
-	"goOauth2/models"
+	oauth2 "github.com/Bifang-Bird/goOauth2"
+	"github.com/Bifang-Bird/goOauth2/models"
 
 	"github.com/google/uuid"
 	"github.com/tidwall/buntdb"

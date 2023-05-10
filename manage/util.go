@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"strings"
 
-	"goOauth2/errors"
+	"github.com/Bifang-Bird/goOauth2/errors"
 )
 
 type (

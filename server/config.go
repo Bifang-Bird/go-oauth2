@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"goOauth2"
+	oauth2 "github.com/Bifang-Bird/goOauth2"
 )
 
 // Config configuration parameters

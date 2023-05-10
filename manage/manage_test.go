@@ -5,11 +5,11 @@ import (
 	"testing"
 	"time"
 
-	oauth2 "goOauth2"
-	"goOauth2/manage"
+	oauth2 "github.com/Bifang-Bird/goOauth2"
+	"github.com/Bifang-Bird/goOauth2/manage"
 
-	"goOauth2/models"
-	"goOauth2/store"
+	"github.com/Bifang-Bird/goOauth2/models"
+	"github.com/Bifang-Bird/goOauth2/store"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

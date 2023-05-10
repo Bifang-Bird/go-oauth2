@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	oauth2 "goOauth2"
+	oauth2 "github.com/Bifang-Bird/goOauth2"
 
-	"goOauth2/errors"
+	"github.com/Bifang-Bird/goOauth2/errors"
 )
 
 // NewDefaultServer create a default authorization server

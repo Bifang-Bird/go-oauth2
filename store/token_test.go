@@ -2,13 +2,14 @@ package store_test
 
 import (
 	"context"
-	oauth2 "goOauth2"
-	"goOauth2/models"
 	"os"
 	"testing"
 	"time"
 
-	"goOauth2/store"
+	oauth2 "github.com/Bifang-Bird/goOauth2"
+	"github.com/Bifang-Bird/goOauth2/models"
+
+	"github.com/Bifang-Bird/goOauth2/store"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

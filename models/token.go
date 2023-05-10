@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"goOauth2"
+	oauth2 "github.com/Bifang-Bird/goOauth2"
 )
 
 // NewToken create to token model instance

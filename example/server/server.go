@@ -13,14 +13,14 @@ import (
 	"os"
 	"time"
 
-	"goOauth2/generates"
+	"github.com/Bifang-Bird/goOauth2/generates"
 
-	"goOauth2/errors"
+	"github.com/Bifang-Bird/goOauth2/errors"
 
-	"goOauth2/manage"
-	"goOauth2/models"
-	"goOauth2/server"
-	"goOauth2/store"
+	"github.com/Bifang-Bird/goOauth2/manage"
+	"github.com/Bifang-Bird/goOauth2/models"
+	"github.com/Bifang-Bird/goOauth2/server"
+	"github.com/Bifang-Bird/goOauth2/store"
 
 	"github.com/go-session/session"
 )
