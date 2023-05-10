@@ -12,6 +12,7 @@ import (
 	oauth2 "github.com/Bifang-Bird/goOauth2"
 
 	"github.com/Bifang-Bird/goOauth2/errors"
+	"github.com/Bifang-Bird/goOauth2/models"
 )
 
 // NewDefaultServer create a default authorization server
@@ -34,6 +35,16 @@ func NewServer(cfg *Config, manager oauth2.Manager) *Server {
 	}
 
 	srv.PasswordAuthorizationHandler = func(ctx context.Context, clientID, username, password string) (string, error) {
+		clientInfo, err := manager.GetClient(ctx, clientID)
+		if err != nil {
+			return "", errors.ErrAccessDenied
+
+		}
+
+		client := clientInfo.(*models.ClientPassword)
+		if strings.EqualFold(client.Password, password) && strings.EqualFold(client.UserID, username) {
+			return username, nil
+		}
 		return "", errors.ErrAccessDenied
 	}
 	return srv
