@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"go-oauth2/models"
-	"go-oauth2/store"
+	"goOauth2/models"
+	"goOauth2/store"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

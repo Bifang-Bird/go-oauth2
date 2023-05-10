@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"go-oauth2"
-	"go-oauth2/generates"
-	"go-oauth2/models"
+	"goOauth2"
+	"goOauth2/generates"
+	"goOauth2/models"
 
 	"github.com/golang-jwt/jwt"
 

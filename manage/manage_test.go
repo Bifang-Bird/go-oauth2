@@ -5,11 +5,11 @@ import (
 	"testing"
 	"time"
 
-	"go-oauth2"
-	"go-oauth2/manage"
+	oauth2 "goOauth2"
+	"goOauth2/manage"
 
-	"go-oauth2/models"
-	"go-oauth2/store"
+	"goOauth2/models"
+	"goOauth2/store"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

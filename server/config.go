@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"go-oauth2"
+	"goOauth2"
 )
 
 // Config configuration parameters

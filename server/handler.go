@@ -2,11 +2,11 @@ package server
 
 import (
 	"context"
-	"go-oauth2"
+	"goOauth2"
 	"net/http"
 	"time"
 
-	"go-oauth2/errors"
+	"goOauth2/errors"
 )
 
 type (

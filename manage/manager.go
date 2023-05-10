@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	"go-oauth2"
-	"go-oauth2/errors"
+	"goOauth2"
+	"goOauth2/errors"
 
-	"go-oauth2/generates"
-	"go-oauth2/models"
+	"goOauth2/generates"
+	"goOauth2/models"
 )
 
 // NewDefaultManager create to default authorization management instance

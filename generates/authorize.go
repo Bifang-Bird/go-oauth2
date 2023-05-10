@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"strings"
 
-	"go-oauth2"
+	"goOauth2"
 
 	"github.com/google/uuid"
 )

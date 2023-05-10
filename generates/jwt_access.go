@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"go-oauth2"
-	"go-oauth2/errors"
+	"goOauth2"
+	"goOauth2/errors"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"

@@ -13,14 +13,14 @@ import (
 	"os"
 	"time"
 
-	"go-oauth2/generates"
+	"goOauth2/generates"
 
-	"go-oauth2/errors"
+	"goOauth2/errors"
 
-	"go-oauth2/manage"
-	"go-oauth2/models"
-	"go-oauth2/server"
-	"go-oauth2/store"
+	"goOauth2/manage"
+	"goOauth2/models"
+	"goOauth2/server"
+	"goOauth2/store"
 
 	"github.com/go-session/session"
 )

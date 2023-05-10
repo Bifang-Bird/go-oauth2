@@ -1,7 +1,7 @@
 package server
 
 import (
-	"go-oauth2"
+	"goOauth2"
 )
 
 // SetTokenType token type

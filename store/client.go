@@ -5,7 +5,7 @@ import (
 	"errors"
 	"sync"
 
-	"go-oauth2"
+	"goOauth2"
 )
 
 // NewClientStore create client store

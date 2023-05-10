@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"strings"
 
-	"go-oauth2/errors"
+	"goOauth2/errors"
 )
 
 type (

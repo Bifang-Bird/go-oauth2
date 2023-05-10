@@ -7,13 +7,14 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	oauth2 "goOauth2"
+	"goOauth2/errors"
+	"goOauth2/manage"
+	"goOauth2/models"
+	"goOauth2/server"
+	"goOauth2/store"
+
 	"github.com/gavv/httpexpect"
-	"github.com/go-oauth2/oauth2/v4"
-	"github.com/go-oauth2/oauth2/v4/errors"
-	"github.com/go-oauth2/oauth2/v4/manage"
-	"github.com/go-oauth2/oauth2/v4/models"
-	"github.com/go-oauth2/oauth2/v4/server"
-	"github.com/go-oauth2/oauth2/v4/store"
 )
 
 var (

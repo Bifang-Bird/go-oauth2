@@ -1,4 +1,4 @@
-module go-oauth2
+module goOauth2
 
 go 1.13
 
