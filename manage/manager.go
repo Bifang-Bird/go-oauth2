@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	"goOauth2"
-	"goOauth2/errors"
+	oauth2 "github.com/Bifang-Bird/goOauth2"
+	"github.com/Bifang-Bird/goOauth2/errors"
 
-	"goOauth2/generates"
-	"goOauth2/models"
+	"github.com/Bifang-Bird/goOauth2/generates"
+	"github.com/Bifang-Bird/goOauth2/models"
 )
 
 // NewDefaultManager create to default authorization management instance
