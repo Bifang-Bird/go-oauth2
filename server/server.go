@@ -35,14 +35,19 @@ func NewServer(cfg *Config, manager oauth2.Manager) *Server {
 	}
 
 	srv.PasswordAuthorizationHandler = func(ctx context.Context, clientID, username, password string) (string, error) {
-		clientInfo, err := manager.GetClient(ctx, clientID)
+		client_Info, err := manager.GetClient(ctx, clientID)
 		if err != nil {
 			return "", errors.ErrAccessDenied
 
 		}
 
-		client := clientInfo.(*models.ClientPassword)
-		if strings.EqualFold(client.Password, password) && strings.EqualFold(client.UserID, username) {
+		value, ok := client_Info.(*models.ClientPassword)
+		if ok {
+			fmt.Printf("client_info is of type ClientPassword, value is %v\n", value)
+		} else {
+			fmt.Printf("client_info is not of type client\n")
+		}
+		if strings.EqualFold(value.Password, password) && strings.EqualFold(value.UserID, username) {
 			return username, nil
 		}
 		return "", errors.ErrAccessDenied
