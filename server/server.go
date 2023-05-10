@@ -376,7 +376,6 @@ func (s *Server) ValidationTokenRequest(r *http.Request) (oauth2.GrantType, *oau
 		if username == "" || password == "" {
 			return "", nil, errors.ErrInvalidRequest
 		}
-
 		userID, err := s.PasswordAuthorizationHandler(r.Context(), clientID, username, password)
 		fmt.Printf("PasswordAuthorizationHandler userID = %v ,err =%v\n", userID, err)
 		if err != nil {
@@ -385,6 +384,7 @@ func (s *Server) ValidationTokenRequest(r *http.Request) (oauth2.GrantType, *oau
 			return "", nil, errors.ErrInvalidGrant
 		}
 		tgr.UserID = userID
+		tgr.Password = password
 	case oauth2.ClientCredentials:
 		tgr.Scope = r.FormValue("scope")
 	case oauth2.Refreshing:
