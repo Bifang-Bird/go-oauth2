@@ -1,6 +1,9 @@
 package models
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 // Client client model
 type ClientPassword struct {
@@ -38,9 +41,8 @@ func (c *ClientPassword) GetUserID() string {
 }
 
 func (c *ClientPassword) VerifyPassword(password string) bool {
-	if len(password) <= 0 {
-		return false
-	}
-	return strings.EqualFold(c.Password, password)
+	booll := strings.EqualFold(c.Password, password)
+	fmt.Printf("VerifyPassword c.password = %v , password = %v , bool= %v\n", c.Password, password, booll)
+	return booll
 
 }
