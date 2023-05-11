@@ -35,6 +35,6 @@ type (
 
 	ClientPermissionStore interface {
 		// according to the ID for the client information
-		GetByID(ctx context.Context, id string) ([]*ClientPermissionInfo, error)
+		GetByID(ctx context.Context, id string) ([]ClientPermissionInfo, error)
 	}
 )
