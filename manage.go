@@ -49,5 +49,5 @@ type Manager interface {
 	// according to the refresh token for corresponding token information
 	LoadRefreshToken(ctx context.Context, refresh string) (ti TokenInfo, err error)
 
-	GetClientPermission(ctx context.Context, clientID string) (cli []*ClientPermissionInfo, err error)
+	GetClientPermission(ctx context.Context, clientID string) (cli []ClientPermissionInfo, err error)
 }

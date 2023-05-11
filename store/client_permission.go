@@ -11,18 +11,18 @@ import (
 // NewClientStore create client store
 func NewClientPermissionStore() *ClientPermissionStore {
 	return &ClientPermissionStore{
-		data: make(map[string][]*oauth2.ClientPermissionInfo),
+		data: make(map[string][]oauth2.ClientPermissionInfo),
 	}
 }
 
 // ClientStore client information store
 type ClientPermissionStore struct {
 	sync.RWMutex
-	data map[string][]*oauth2.ClientPermissionInfo
+	data map[string][]oauth2.ClientPermissionInfo
 }
 
 // GetByID according to the ID for the client information
-func (cs *ClientPermissionStore) GetByID(ctx context.Context, id string) ([]*oauth2.ClientPermissionInfo, error) {
+func (cs *ClientPermissionStore) GetByID(ctx context.Context, id string) ([]oauth2.ClientPermissionInfo, error) {
 	cs.RLock()
 	defer cs.RUnlock()
 
@@ -33,7 +33,7 @@ func (cs *ClientPermissionStore) GetByID(ctx context.Context, id string) ([]*oau
 }
 
 // Set set client information
-func (cs *ClientPermissionStore) Set(id string, cli []*oauth2.ClientPermissionInfo) (err error) {
+func (cs *ClientPermissionStore) Set(id string, cli []oauth2.ClientPermissionInfo) (err error) {
 	cs.Lock()
 	defer cs.Unlock()
 

@@ -157,7 +157,7 @@ func (m *Manager) GetClient(ctx context.Context, clientID string) (cli oauth2.Cl
 }
 
 // GetClient get the client information
-func (m *Manager) GetClientPermission(ctx context.Context, clientID string) (cli []*oauth2.ClientPermissionInfo, err error) {
+func (m *Manager) GetClientPermission(ctx context.Context, clientID string) (cli []oauth2.ClientPermissionInfo, err error) {
 	cli, err = m.clientPermissionStore.GetByID(ctx, clientID)
 	if err != nil {
 		return
