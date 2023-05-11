@@ -57,4 +57,11 @@ type (
 		GetRefreshExpiresIn() time.Duration
 		SetRefreshExpiresIn(time.Duration)
 	}
+
+	ClientPermissionInfo interface {
+		GetClientId() string
+		GetUserID() string
+		GetApiModule() string
+		GetApiUrl() string
+	}
 )

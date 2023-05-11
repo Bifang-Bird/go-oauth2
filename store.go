@@ -32,4 +32,9 @@ type (
 		// use the refresh token for token information data
 		GetByRefresh(ctx context.Context, refresh string) (TokenInfo, error)
 	}
+
+	ClientPermissionStore interface {
+		// according to the ID for the client information
+		GetByID(ctx context.Context, id string) ([]*ClientPermissionInfo, error)
+	}
 )
