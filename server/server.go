@@ -540,6 +540,23 @@ func (s *Server) HandleTokenRequest(w http.ResponseWriter, r *http.Request) erro
 	return s.token(w, s.GetTokenData(ti), nil)
 }
 
+// HandleTokenRequest token request handling
+func (s *Server) GetTokenRequestHandle(r *http.Request) (map[string]interface{}, error) {
+	ctx := r.Context()
+
+	gt, tgr, err := s.ValidationTokenRequest(r)
+	if err != nil {
+		return nil, err
+	}
+	ti, err := s.GetAccessToken(ctx, gt, tgr)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Printf("ValidationTokenRequest,gt=%v,tgr=%v,tokenInfo=%v\n", gt, *tgr, ti)
+
+	return s.GetTokenData(ti), nil
+}
+
 // GetErrorData get error response data
 func (s *Server) GetErrorData(err error) (map[string]interface{}, int, http.Header) {
 	var re errors.Response
