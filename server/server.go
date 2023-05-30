@@ -500,7 +500,7 @@ func (s *Server) GetTokenData(ti oauth2.TokenInfo) map[string]interface{} {
 	data := map[string]interface{}{
 		"access_token": ti.GetAccess(),
 		"token_type":   s.Config.TokenType,
-		"expires_in":   int64(ti.GetAccessExpiresIn() / time.Second),
+		"expires_in":   int64(ti.GetAccessExpiresIn() / time.Millisecond),
 	}
 
 	if scope := ti.GetScope(); scope != "" {
