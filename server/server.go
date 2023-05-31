@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -110,6 +111,27 @@ func (s *Server) tokenError(w http.ResponseWriter, err error) error {
 }
 
 func (s *Server) token(w http.ResponseWriter, data map[string]interface{}, header http.Header, statusCode ...int) error {
+	if fn := s.ResponseTokenHandler; fn != nil {
+		return fn(w, data, header, statusCode...)
+	}
+	w.Header().Set("Content-Type", "application/json;charset=UTF-8")
+	w.Header().Set("Cache-Control", "no-store")
+	w.Header().Set("Pragma", "no-cache")
+
+	for key := range header {
+		w.Header().Set(key, header.Get(key))
+	}
+
+	status := http.StatusOK
+	if len(statusCode) > 0 && statusCode[0] > 0 {
+		status = statusCode[0]
+	}
+
+	w.WriteHeader(status)
+	return json.NewEncoder(w).Encode(data)
+}
+
+func (s *Server) Token(w http.ResponseWriter, data map[string]interface{}, header http.Header, statusCode ...int) error {
 	if fn := s.ResponseTokenHandler; fn != nil {
 		return fn(w, data, header, statusCode...)
 	}
@@ -333,10 +355,48 @@ func (s *Server) HandleAuthorizeRequest(w http.ResponseWriter, r *http.Request) 
 	return s.redirect(w, req, s.GetAuthorizeData(req.ResponseType, ti))
 }
 
+func (s *Server) handleRequest(r *http.Request) error {
+	if r.Header.Get("Content-Type") == "application/json" {
+		// 解析 JSON 参数
+		var data models.TokenParams
+		err := json.NewDecoder(r.Body).Decode(&data)
+		if err != nil {
+			return errors.ErrInvalidRequest
+		}
+		// 创建表单数据
+		form := url.Values{}
+		form.Set("grant_type", data.GrantType)
+		form.Set("client_id", data.ClientID)
+		form.Set("client_secret", data.ClientSecret)
+		form.Set("scope", data.Scope)
+		form.Set("username", data.Username)
+		form.Set("password", data.Password)
+		form.Set("redirect_uri", data.RedirectURI)
+		form.Set("code", data.Code)
+		form.Set("code_verifier", data.CodeVerifier)
+		form.Set("refresh_token", data.RefreshToken)
+		form.Set("access_token", data.AccessToken)
+
+		// 将表单数据转换为字符串
+		formData := form.Encode()
+
+		// 设置请求头
+		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		r.ContentLength = int64(len(formData))
+
+		// 替换请求的 Body
+		r.Body = ioutil.NopCloser(strings.NewReader(formData))
+	}
+	return nil
+}
+
 // ValidationTokenRequest the token request validation
 func (s *Server) ValidationTokenRequest(r *http.Request) (oauth2.GrantType, *oauth2.TokenGenerateRequest, error) {
 	if v := r.Method; !(v == "POST" ||
 		(s.Config.AllowGetAccessRequest && v == "GET")) {
+		return "", nil, errors.ErrInvalidRequest
+	}
+	if err := s.handleRequest(r); err != nil {
 		return "", nil, errors.ErrInvalidRequest
 	}
 
@@ -344,7 +404,6 @@ func (s *Server) ValidationTokenRequest(r *http.Request) (oauth2.GrantType, *oau
 	if gt.String() == "" {
 		return "", nil, errors.ErrUnsupportedGrantType
 	}
-
 	clientID, clientSecret, err := s.ClientInfoHandler(r)
 
 	fmt.Printf("clientId=%v,clientSecret=%v,clientInfoHandle=%v\n", clientID, clientSecret, s.ClientInfoHandler)
@@ -396,6 +455,70 @@ func (s *Server) ValidationTokenRequest(r *http.Request) (oauth2.GrantType, *oau
 	}
 	return gt, tgr, nil
 }
+
+// ValidationTokenRequest the token request validation
+// func (s *Server) ValidationTokenRequest(r *http.Request) (oauth2.GrantType, *oauth2.TokenGenerateRequest, error) {
+// 	if v := r.Method; !(v == "POST" ||
+// 		(s.Config.AllowGetAccessRequest && v == "GET")) {
+// 		return "", nil, errors.ErrInvalidRequest
+// 	}
+
+// 	gt := oauth2.GrantType(r.FormValue("grant_type"))
+// 	if gt.String() == "" {
+// 		return "", nil, errors.ErrUnsupportedGrantType
+// 	}
+
+// 	clientID, clientSecret, err := s.ClientInfoHandler(r)
+
+// 	fmt.Printf("clientId=%v,clientSecret=%v,clientInfoHandle=%v\n", clientID, clientSecret, s.ClientInfoHandler)
+// 	if err != nil {
+// 		return "", nil, err
+// 	}
+
+// 	tgr := &oauth2.TokenGenerateRequest{
+// 		ClientID:     clientID,
+// 		ClientSecret: clientSecret,
+// 		Request:      r,
+// 	}
+
+// 	switch gt {
+// 	case oauth2.AuthorizationCode:
+// 		tgr.RedirectURI = r.FormValue("redirect_uri")
+// 		tgr.Code = r.FormValue("code")
+// 		if tgr.RedirectURI == "" ||
+// 			tgr.Code == "" {
+// 			return "", nil, errors.ErrInvalidRequest
+// 		}
+// 		tgr.CodeVerifier = r.FormValue("code_verifier")
+// 		if s.Config.ForcePKCE && tgr.CodeVerifier == "" {
+// 			return "", nil, errors.ErrInvalidRequest
+// 		}
+// 	case oauth2.PasswordCredentials:
+// 		tgr.Scope = r.FormValue("scope")
+// 		username, password := r.FormValue("username"), r.FormValue("password")
+// 		if username == "" || password == "" {
+// 			return "", nil, errors.ErrInvalidRequest
+// 		}
+// 		userID, err := s.PasswordAuthorizationHandler(r.Context(), clientID, username, password)
+// 		fmt.Printf("PasswordAuthorizationHandler userID = %v ,err =%v\n", userID, err)
+// 		if err != nil {
+// 			return "", nil, err
+// 		} else if userID == "" {
+// 			return "", nil, errors.ErrInvalidGrant
+// 		}
+// 		tgr.UserID = userID
+// 		tgr.Password = password
+// 	case oauth2.ClientCredentials:
+// 		tgr.Scope = r.FormValue("scope")
+// 	case oauth2.Refreshing:
+// 		tgr.Refresh = r.FormValue("refresh_token")
+// 		tgr.Scope = r.FormValue("scope")
+// 		if tgr.Refresh == "" {
+// 			return "", nil, errors.ErrInvalidRequest
+// 		}
+// 	}
+// 	return gt, tgr, nil
+// }
 
 // CheckGrantType check allows grant type
 func (s *Server) CheckGrantType(gt oauth2.GrantType) bool {

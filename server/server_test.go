@@ -66,6 +66,12 @@ func testServer(t *testing.T, w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			t.Error(err)
 		}
+	case "/token2":
+		resp, err := srv.GetTokenRequestHandle(r)
+		if err != nil {
+			t.Error(err)
+		}
+		srv.Token(w, resp, nil)
 	}
 }
 
@@ -322,18 +328,58 @@ func TestClientCredentials(t *testing.T) {
 		return
 	})
 
-	resObj := e.POST("/token").
-		WithFormField("grant_type", "client_credentials").
-		WithFormField("scope", "all").
-		WithFormField("client_id", clientID).
-		WithFormField("client_secret", clientSecret).
-		Expect().
-		Status(http.StatusOK).
-		JSON().Object()
+	// resObj := e.POST("/token").
+	// 	WithFormField("grant_type", "client_credentials").
+	// 	WithFormField("scope", "all").
+	// 	WithFormField("client_id", clientID).
+	// 	WithFormField("client_secret", clientSecret).
+	// 	Expect().
+	// 	Status(http.StatusOK).
+	// 	JSON().Object()
 
+	// t.Logf("%#v\n", resObj.Raw())
+
+	// validationAccessToken(t, resObj.Value("access_token").String().Raw())
+
+	// resObj := e.POST("/token2").
+	// 	WithFormField("grant_type", "client_credentials").
+	// 	WithFormField("scope", "all").
+	// 	WithFormField("client_id", clientID).
+	// 	WithFormField("client_secret", clientSecret).
+	// 	Expect().
+	// 	Status(http.StatusOK).
+	// 	JSON().Object()
+
+	// t.Logf("%#v\n", resObj.Raw())
+
+	// validationAccessToken(t, resObj.Value("access_token").String().Raw())
+
+	// resObj := e.POST("/token2").WithJSON("grant_type", "client_credentials").
+	// 	WithFormField("scope", "all").
+	// 	WithFormField("client_id", clientID).
+	// 	WithFormField("client_secret", clientSecret).
+	// 	Expect().
+	// 	Status(http.StatusOK).
+	// 	JSON().Object()
+
+	// 构建 JSON 数据
+	data := map[string]interface{}{
+		"scope":         "all",
+		"client_id":     clientID,
+		"client_secret": clientSecret,
+		"grant_type":    "client_credentials",
+	}
+
+	// 发送 POST 请求并设置请求头和 JSON 数据
+	resObj := e.POST("/token2").
+		WithHeader("Content-Type", "application/json").
+		WithJSON(data).
+		Expect().
+		Status(http.StatusOK).JSON().Object()
 	t.Logf("%#v\n", resObj.Raw())
 
 	validationAccessToken(t, resObj.Value("access_token").String().Raw())
+
 }
 
 func TestRefreshing(t *testing.T) {
