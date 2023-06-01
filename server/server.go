@@ -356,7 +356,10 @@ func (s *Server) HandleAuthorizeRequest(w http.ResponseWriter, r *http.Request) 
 }
 
 func (s *Server) handleRequest(r *http.Request) error {
-	if r.Header.Get("Content-Type") == "application/json" {
+	contentType := r.Header.Get("Content-Type")
+	strContainers := strings.Contains(contentType, "application/json")
+
+	if strContainers {
 		// 解析 JSON 参数
 		var data models.TokenParams
 		err := json.NewDecoder(r.Body).Decode(&data)
