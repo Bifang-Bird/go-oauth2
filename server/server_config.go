@@ -91,3 +91,8 @@ func (s *Server) SetAuthorizeScopeHandler(handler AuthorizeScopeHandler) {
 func (s *Server) SetResponseTokenHandler(handler ResponseTokenHandler) {
 	s.ResponseTokenHandler = handler
 }
+
+// SetClientInfoHandler get client info from request
+func (s *Server) SetHttpBasicClientInfoHandler(handler ClientInfoHandler) {
+	s.HttpBasicClientInfocHandler = handler
+}

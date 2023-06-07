@@ -31,6 +31,8 @@ func NewServer(cfg *Config, manager oauth2.Manager) *Server {
 	// default handler
 	srv.SetClientInfoHandler(ClientBasicHandler)
 
+	srv.SetHttpBasicClientInfoHandler(ClientBasicHandler)
+
 	srv.UserAuthorizationHandler = func(w http.ResponseWriter, r *http.Request) (string, error) {
 		return "", errors.ErrAccessDenied
 	}
@@ -75,6 +77,7 @@ type Server struct {
 	AccessTokenExpHandler        AccessTokenExpHandler
 	AuthorizeScopeHandler        AuthorizeScopeHandler
 	ResponseTokenHandler         ResponseTokenHandler
+	HttpBasicClientInfocHandler  ClientInfoHandler
 }
 
 func (s *Server) handleError(w http.ResponseWriter, req *AuthorizeRequest, err error) error {
@@ -759,4 +762,27 @@ func (s *Server) ValidationBearerToken(r *http.Request) (oauth2.TokenInfo, error
 	}
 
 	return s.Manager.LoadAccessToken(ctx, accessToken)
+}
+
+// ValidationBasicToken validation the bearer tokens
+// https://tools.ietf.org/html/rfc6750
+func (s *Server) ValidationBasicToken(r *http.Request) (oauth2.ClientInfo, error) {
+	ctx := r.Context()
+
+	client_id, client_secret, err := s.HttpBasicClientInfocHandler(r)
+	if err != nil {
+		return nil, errors.ErrInvalidAuthorizeCode
+	}
+
+	clientInfo, err := s.Manager.GetClient(ctx, client_id)
+	if err != nil {
+		return nil, errors.ErrInvalidAuthorizeCode
+	}
+
+	value, _ := clientInfo.(*models.ClientPassword)
+	if strings.EqualFold(value.GetSecret(), client_secret) {
+		return value, nil
+	}
+	return nil, errors.ErrInvalidAuthorizeCode
+
 }
