@@ -12,6 +12,7 @@ type (
 		GetDomain() string
 		IsPublic() bool
 		GetUserID() string
+		GetAccount() string
 	}
 
 	// ClientPasswordVerifier the password handler interface
