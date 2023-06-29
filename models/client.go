@@ -2,11 +2,12 @@ package models
 
 // Client client model
 type Client struct {
-	ID     string
-	Secret string
-	Domain string
-	Public bool
-	UserID string
+	ID      string
+	Secret  string
+	Domain  string
+	Public  bool
+	UserID  string
+	Account string
 }
 
 // GetID client id
@@ -32,4 +33,9 @@ func (c *Client) IsPublic() bool {
 // GetUserID user id
 func (c *Client) GetUserID() string {
 	return c.UserID
+}
+
+// GetUserID user id
+func (c *Client) GetAccount() string {
+	return c.Account
 }

@@ -13,6 +13,7 @@ type ClientPassword struct {
 	Public   bool
 	UserID   string
 	Password string
+	Account  string
 }
 
 // GetID client id
@@ -38,6 +39,11 @@ func (c *ClientPassword) IsPublic() bool {
 // GetUserID user id
 func (c *ClientPassword) GetUserID() string {
 	return c.UserID
+}
+
+// GetUserID user id
+func (c *ClientPassword) GetAccount() string {
+	return c.Account
 }
 
 func (c *ClientPassword) VerifyPassword(password string) bool {
