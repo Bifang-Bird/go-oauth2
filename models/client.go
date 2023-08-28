@@ -1,13 +1,19 @@
 package models
 
+import (
+	"fmt"
+	"strings"
+)
+
 // Client client model
 type Client struct {
-	ID      string
-	Secret  string
-	Domain  string
-	Public  bool
-	UserID  string
-	Account string
+	ID       string
+	Secret   string
+	Domain   string
+	Public   bool
+	UserID   string
+	Password string
+	Account  string
 }
 
 // GetID client id
@@ -38,4 +44,11 @@ func (c *Client) GetUserID() string {
 // GetUserID user id
 func (c *Client) GetAccount() string {
 	return c.Account
+}
+
+func (c *Client) VerifyPassword(password string) bool {
+	booll := strings.EqualFold(c.Password, password)
+	fmt.Printf("VerifyPassword c.password = %v , password = %v , bool= %v\n", c.Password, password, booll)
+	return booll
+
 }

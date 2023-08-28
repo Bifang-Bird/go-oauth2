@@ -28,6 +28,8 @@ type Manager interface {
 	// get the client information
 	GetClient(ctx context.Context, clientID string) (cli ClientInfo, err error)
 
+	GenerateClientInfo(ctx context.Context, gt ClientInfo) (err error)
+
 	// generate the authorization token(code)
 	GenerateAuthToken(ctx context.Context, rt ResponseType, tgr *TokenGenerateRequest) (authToken TokenInfo, err error)
 
@@ -50,4 +52,6 @@ type Manager interface {
 	LoadRefreshToken(ctx context.Context, refresh string) (ti TokenInfo, err error)
 
 	GetClientPermission(ctx context.Context, clientID string) (cli []ClientPermissionInfo, err error)
+
+	GenerateClientPermission(ctx context.Context, key string, gt []ClientPermissionInfo) (err error)
 }

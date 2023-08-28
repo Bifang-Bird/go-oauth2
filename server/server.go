@@ -29,7 +29,7 @@ func NewServer(cfg *Config, manager oauth2.Manager) *Server {
 	}
 
 	// default handler
-	srv.SetClientInfoHandler(ClientBasicHandler)
+	//srv.SetClientInfoHandler(ClientBasicHandler)
 
 	srv.SetHttpBasicClientInfoHandler(ClientBasicHandler)
 
@@ -44,7 +44,7 @@ func NewServer(cfg *Config, manager oauth2.Manager) *Server {
 
 		}
 
-		value, ok := client_Info.(*models.ClientPassword)
+		value, ok := client_Info.(*models.Client)
 		if ok {
 			fmt.Printf("client_info is of type ClientPassword, value is %v\n", value)
 		} else {
@@ -779,7 +779,7 @@ func (s *Server) ValidationBasicToken(r *http.Request) (oauth2.ClientInfo, error
 		return nil, errors.ErrInvalidAuthorizeCode
 	}
 
-	value, _ := clientInfo.(*models.ClientPassword)
+	value, _ := clientInfo.(*models.Client)
 	if strings.EqualFold(value.GetSecret(), client_secret) {
 		return value, nil
 	}

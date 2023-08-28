@@ -7,6 +7,13 @@ type (
 	ClientStore interface {
 		// according to the ID for the client information
 		GetByID(ctx context.Context, id string) (ClientInfo, error)
+
+		CreateClient(ctx context.Context, info ClientInfo) error
+
+		// according to the ID for the client information
+		GetPermissionByID(ctx context.Context, id string) ([]ClientPermissionInfo, error)
+
+		CreateClientPermission(ctx context.Context, clientId string, info []ClientPermissionInfo) error
 	}
 
 	// TokenStore the token information storage interface
@@ -31,14 +38,5 @@ type (
 
 		// use the refresh token for token information data
 		GetByRefresh(ctx context.Context, refresh string) (TokenInfo, error)
-
-		CreateClient(ctx context.Context, info ClientInfo) error
-
-		getClient(ctx context.Context, key string) (ClientInfo, error)
-	}
-
-	ClientPermissionStore interface {
-		// according to the ID for the client information
-		GetByID(ctx context.Context, id string) ([]ClientPermissionInfo, error)
 	}
 )

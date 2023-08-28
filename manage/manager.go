@@ -32,15 +32,14 @@ func NewManager() *Manager {
 
 // Manager provide authorization management
 type Manager struct {
-	codeExp               time.Duration
-	gtcfg                 map[oauth2.GrantType]*Config
-	rcfg                  *RefreshingConfig
-	validateURI           ValidateURIHandler
-	authorizeGenerate     oauth2.AuthorizeGenerate
-	accessGenerate        oauth2.AccessGenerate
-	tokenStore            oauth2.TokenStore
-	clientStore           oauth2.ClientStore
-	clientPermissionStore oauth2.ClientPermissionStore
+	codeExp           time.Duration
+	gtcfg             map[oauth2.GrantType]*Config
+	rcfg              *RefreshingConfig
+	validateURI       ValidateURIHandler
+	authorizeGenerate oauth2.AuthorizeGenerate
+	accessGenerate    oauth2.AccessGenerate
+	tokenStore        oauth2.TokenStore
+	clientStore       oauth2.ClientStore
 }
 
 // get grant type config
@@ -132,19 +131,6 @@ func (m *Manager) MustTokenStorage(stor oauth2.TokenStore, err error) {
 	m.tokenStore = stor
 }
 
-// MapTokenStorage mapping the token store interface
-func (m *Manager) MapClientPermissionStorage(stor oauth2.ClientPermissionStore) {
-	m.clientPermissionStore = stor
-}
-
-// MustTokenStorage mandatory mapping the token store interface
-func (m *Manager) MustClientPermissionStorage(stor oauth2.ClientPermissionStore, err error) {
-	if err != nil {
-		panic(err)
-	}
-	m.clientPermissionStore = stor
-}
-
 // GetClient get the client information
 func (m *Manager) GetClient(ctx context.Context, clientID string) (cli oauth2.ClientInfo, err error) {
 	cli, err = m.clientStore.GetByID(ctx, clientID)
@@ -156,15 +142,28 @@ func (m *Manager) GetClient(ctx context.Context, clientID string) (cli oauth2.Cl
 	return
 }
 
+func (m *Manager) GenerateClientInfo(ctx context.Context, gt oauth2.ClientInfo) (err error) {
+	err = m.clientStore.CreateClient(ctx, gt)
+	return err
+}
+
 // GetClient get the client information
 func (m *Manager) GetClientPermission(ctx context.Context, clientID string) (cli []oauth2.ClientPermissionInfo, err error) {
-	cli, err = m.clientPermissionStore.GetByID(ctx, clientID)
+	cli, err = m.clientStore.GetPermissionByID(ctx, clientID)
 	if err != nil {
 		return
 	} else if cli == nil {
 		err = errors.ErrInvalidClient
 	}
 	return
+}
+
+func (m *Manager) GenerateClientPermission(ctx context.Context, key string, gt []oauth2.ClientPermissionInfo) (err error) {
+	err = m.clientStore.CreateClientPermission(ctx, key, gt)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // GenerateAuthToken generate the authorization token(code)
