@@ -54,4 +54,6 @@ type Manager interface {
 	GetClientPermission(ctx context.Context, clientID string) (cli []ClientPermissionInfo, err error)
 
 	GenerateClientPermission(ctx context.Context, key string, gt []ClientPermissionInfo) (err error)
+
+	RemoveClientInfo(ctx context.Context, clientId string) (err error)
 }

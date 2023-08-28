@@ -142,9 +142,18 @@ func (m *Manager) GetClient(ctx context.Context, clientID string) (cli oauth2.Cl
 	return
 }
 
+// insert clientinfo to redis
 func (m *Manager) GenerateClientInfo(ctx context.Context, gt oauth2.ClientInfo) (err error) {
 	err = m.clientStore.CreateClient(ctx, gt)
 	return err
+}
+
+// use the clientId to delete client info in the redis
+func (m *Manager) RemoveClientInfo(ctx context.Context, clientId string) (err error) {
+	if clientId == "" {
+		return errors.ErrInvalidRequest
+	}
+	return m.clientStore.RemoveClientInfoById(ctx, clientId)
 }
 
 // GetClient get the client information

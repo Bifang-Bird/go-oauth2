@@ -14,6 +14,9 @@ type (
 		GetPermissionByID(ctx context.Context, id string) ([]ClientPermissionInfo, error)
 
 		CreateClientPermission(ctx context.Context, clientId string, info []ClientPermissionInfo) error
+
+		// use the clientId to delete the client information
+		RemoveClientInfoById(ctx context.Context, clientId string) error
 	}
 
 	// TokenStore the token information storage interface
