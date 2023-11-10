@@ -47,7 +47,7 @@ func (c *Client) GetAccount() string {
 }
 
 func (c *Client) VerifyPassword(password string) bool {
-	booll := strings.EqualFold(c.Password, password)
+	booll := strings.EqualFold(c.GetSecret(), password)
 	fmt.Printf("VerifyPassword c.password = %v , password = %v , bool= %v\n", c.Password, password, booll)
 	return booll
 
