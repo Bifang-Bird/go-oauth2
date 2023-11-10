@@ -337,9 +337,9 @@ func (m *Manager) GenerateAccessToken(ctx context.Context, gt oauth2.GrantType, 
 		}
 	}
 
-	if len(cli.GetSecret()) > 0 && tgr.ClientSecret != cli.GetSecret() {
-		return nil, errors.ErrInvalidClient
-	}
+	// if gt == oauth2.ClientCredentials && len(cli.GetSecret()) > 0 && tgr.ClientSecret != cli.GetSecret() {
+	// 	return nil, errors.ErrInvalidClient
+	// }
 
 	if tgr.RedirectURI != "" {
 		if err := m.validateURI(cli.GetDomain(), tgr.RedirectURI); err != nil {
