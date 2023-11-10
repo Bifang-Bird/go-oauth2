@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -57,7 +56,7 @@ type (
 
 // ClientFormHandler get client data from form
 func ClientFormHandler(r *http.Request) (string, string, error) {
-	fmt.Printf("ClientBasicHandler,clientid=%v,clientsecret=%v\n", r.Form.Get("client_id"), r.Form.Get("client_secret"))
+	//fmt.Printf("ClientBasicHandler,clientid=%v,clientsecret=%v\n", r.Form.Get("client_id"), r.Form.Get("client_secret"))
 	clientID := r.Form.Get("client_id")
 	if clientID == "" {
 		return "", "", errors.ErrInvalidClient
@@ -69,7 +68,7 @@ func ClientFormHandler(r *http.Request) (string, string, error) {
 // ClientBasicHandler get client data from basic authorization
 func ClientBasicHandler(r *http.Request) (string, string, error) {
 	username, password, ok := r.BasicAuth()
-	fmt.Printf("ClientBasicHandler,username=%v,password=%v,bool=%v\n", username, password, ok)
+	//fmt.Printf("ClientBasicHandler,username=%v,password=%v,bool=%v\n", username, password, ok)
 	if !ok {
 		return "", "", errors.ErrInvalidClient
 	}

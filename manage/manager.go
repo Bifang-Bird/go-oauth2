@@ -324,7 +324,7 @@ func (m *Manager) GenerateAccessToken(ctx context.Context, gt oauth2.GrantType, 
 			psd = tgr.ClientSecret
 		}
 		verifyPassword := cliPass.VerifyPassword(psd)
-		fmt.Printf("GenerateAccessToken  oauth2.ClientPasswordVerifier = %v,verifypassword = %v\n", cliPass, verifyPassword)
+		//fmt.Printf("GenerateAccessToken  oauth2.ClientPasswordVerifier = %v,verifypassword = %v\n", cliPass, verifyPassword)
 		if !verifyPassword {
 			return nil, errors.ErrInvalidClient
 		}

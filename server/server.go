@@ -664,7 +664,7 @@ func (s *Server) HandleTokenRequest(w http.ResponseWriter, r *http.Request) erro
 	if err != nil {
 		return s.tokenError(w, err)
 	}
-	fmt.Printf("ValidationTokenRequest,gt=%v,tgr=%v,tokenInfo=%v\n", gt, *tgr, ti)
+	//fmt.Printf("ValidationTokenRequest,gt=%v,tgr=%v,tokenInfo=%v\n", gt, *tgr, ti)
 
 	return s.token(w, s.GetTokenData(ti), nil)
 }
@@ -681,7 +681,7 @@ func (s *Server) GetTokenRequestHandle(r *http.Request) (map[string]interface{},
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("ValidationTokenRequest,gt=%v,tgr=%v,tokenInfo=%v\n", gt, *tgr, ti)
+	//fmt.Printf("ValidationTokenRequest,gt=%v,tgr=%v,tokenInfo=%v\n", gt, *tgr, ti)
 
 	return s.GetTokenData(ti), nil
 }
