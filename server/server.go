@@ -44,7 +44,7 @@ func NewServer(cfg *Config, manager oauth2.Manager) *Server {
 
 		}
 
-		value, ok := client_Info.(*models.Client)
+		value, ok := client_Info.(*models.ClientPassword)
 		if ok {
 			fmt.Printf("client_info is of type ClientPassword, value is %v\n", value)
 		} else {

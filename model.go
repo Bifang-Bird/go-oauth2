@@ -13,6 +13,7 @@ type (
 		IsPublic() bool
 		GetUserID() string
 		GetAccount() string
+		GetGrantType() GrantType
 	}
 
 	// ClientPasswordVerifier the password handler interface

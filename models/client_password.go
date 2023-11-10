@@ -3,17 +3,20 @@ package models
 import (
 	"fmt"
 	"strings"
+
+	oauth2 "github.com/Bifang-Bird/goOauth2"
 )
 
 // Client client model
 type ClientPassword struct {
-	ID       string
-	Secret   string
-	Domain   string
-	Public   bool
-	UserID   string
-	Password string
-	Account  string
+	ID        string
+	Secret    string
+	Domain    string
+	Public    bool
+	UserID    string
+	Password  string
+	Account   string
+	GrantType oauth2.GrantType
 }
 
 // GetID client id
@@ -44,6 +47,10 @@ func (c *ClientPassword) GetUserID() string {
 // GetUserID user id
 func (c *ClientPassword) GetAccount() string {
 	return c.Account
+}
+
+func (c *ClientPassword) GetGrantType() oauth2.GrantType {
+	return c.GrantType
 }
 
 func (c *ClientPassword) VerifyPassword(password string) bool {
