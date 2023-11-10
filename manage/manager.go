@@ -2,7 +2,6 @@ package manage
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	oauth2 "github.com/Bifang-Bird/goOauth2"
@@ -318,20 +317,30 @@ func (m *Manager) GenerateAccessToken(ctx context.Context, gt oauth2.GrantType, 
 	if err != nil {
 		return nil, err
 	}
-	if cliPass, ok := cli.(oauth2.ClientPasswordVerifier); ok {
-		var psd string = tgr.Password
-		if gt == oauth2.ClientCredentials {
-			psd = tgr.ClientSecret
-		}
-		verifyPassword := cliPass.VerifyPassword(psd)
-		//fmt.Printf("GenerateAccessToken  oauth2.ClientPasswordVerifier = %v,verifypassword = %v\n", cliPass, verifyPassword)
+	var psd string = tgr.Password
+
+	if gt == oauth2.ClientCredentials {
+		psd = tgr.ClientSecret
+		client := cli.(*models.Client)
+		verifyPassword := client.VerifyPassword(psd)
 		if !verifyPassword {
 			return nil, errors.ErrInvalidClient
 		}
-	} else if len(cli.GetSecret()) > 0 && tgr.ClientSecret != cli.GetSecret() {
-		fmt.Printf("GenerateAccessToken  cli = %v,tgr = %v\n", cli, *tgr)
+	}
+
+	if gt == oauth2.PasswordCredentials {
+		psd = tgr.Password
+		client := cli.(*models.ClientPassword)
+		verifyPassword := client.VerifyPassword(psd)
+		if !verifyPassword {
+			return nil, errors.ErrInvalidClient
+		}
+	}
+
+	if len(cli.GetSecret()) > 0 && tgr.ClientSecret != cli.GetSecret() {
 		return nil, errors.ErrInvalidClient
 	}
+
 	if tgr.RedirectURI != "" {
 		if err := m.validateURI(cli.GetDomain(), tgr.RedirectURI); err != nil {
 			return nil, err
