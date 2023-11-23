@@ -778,10 +778,9 @@ func (s *Server) ValidationBasicToken(r *http.Request) (oauth2.ClientInfo, error
 	if err != nil {
 		return nil, errors.ErrInvalidAuthorizeCode
 	}
-
-	value, _ := clientInfo.(*models.Client)
-	if strings.EqualFold(value.GetSecret(), client_secret) {
-		return value, nil
+	//value, _ := clientInfo.(*models.Client)
+	if strings.EqualFold(clientInfo.GetSecret(), client_secret) {
+		return clientInfo, nil
 	}
 	return nil, errors.ErrInvalidAuthorizeCode
 
